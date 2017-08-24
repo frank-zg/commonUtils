@@ -11,7 +11,7 @@ import io.netty.handler.codec.string.StringEncoder;
 /**
  * Created by frank_zhao on 2017/8/24.
  *
- * @apiNote TcpUtil
+ * @apiNote TcpClientUtil
  */
 public class TcpClientUtil {
 

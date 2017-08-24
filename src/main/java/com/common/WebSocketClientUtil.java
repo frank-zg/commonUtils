@@ -10,9 +10,9 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by frank_zhao on 2017/8/24.
  *
- * @apiNote webSocket
+ * @apiNote webClientSocket
  */
-public class WebSocketUtil {
+public class WebSocketClientUtil {
 
     private WebSocket websocket;
     private AsyncHttpClientConfig config;
@@ -22,7 +22,7 @@ public class WebSocketUtil {
      * @param host
      * @param port
      */
-    public WebSocketUtil(String host, int port) {
+    public WebSocketClientUtil(String host, int port) {
         config = new DefaultAsyncHttpClientConfig.Builder()
                 .setProxyServer(new ProxyServer.Builder(host, port)).build();
         asyncHttpClient = new DefaultAsyncHttpClient(config);
@@ -36,7 +36,8 @@ public class WebSocketUtil {
      * @throws InterruptedException
      * @apiNote open webSocket stream
      */
-    public void webSocket(String url, WebSocketListener webSocketListener) throws ExecutionException, InterruptedException {
+    public void connection(String url, WebSocketListener webSocketListener) throws ExecutionException,
+            InterruptedException {
         websocket = asyncHttpClient.prepareGet(url)
                 .execute(new WebSocketUpgradeHandler.Builder().addWebSocketListener(webSocketListener).build()).get();
     }
