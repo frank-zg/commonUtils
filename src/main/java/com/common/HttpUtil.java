@@ -1,6 +1,7 @@
 package com.common;
 
 import org.asynchttpclient.*;
+import org.asynchttpclient.request.body.multipart.Part;
 
 import java.util.List;
 import java.util.Map;
@@ -161,6 +162,25 @@ public class HttpUtil {
             ExecutionException, TimeoutException {
         return asyncHttpClient.preparePost(url)
                 .setBody(body)
+                .setSingleHeaders(headers)
+                .execute().get(timeout, TimeUnit.SECONDS);
+    }
+
+    /**
+     * @param url     http://******
+     * @param body
+     * @param headers
+     * @param timeout sec
+     * @return
+     * @throws InterruptedException
+     * @throws ExecutionException
+     * @throws TimeoutException
+     * @apiNote http post request
+     */
+    public static Response httpPostV3(String url, List<Part> body, Map<String, String> headers, long timeout) throws InterruptedException,
+            ExecutionException, TimeoutException {
+        return asyncHttpClient.preparePost(url)
+                .setBodyParts(body)
                 .setSingleHeaders(headers)
                 .execute().get(timeout, TimeUnit.SECONDS);
     }

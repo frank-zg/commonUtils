@@ -48,7 +48,7 @@ public class WebSocketClientUtil {
      */
     public void closeWebSocket() throws IOException {
         if (websocket != null) {
-            websocket.close();
+            websocket.sendCloseFrame().getNow();
         }
     }
 }
