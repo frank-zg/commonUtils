@@ -48,7 +48,7 @@ public class HttpUtil {
             InterruptedException,
             ExecutionException, TimeoutException {
         return asyncHttpClient.prepareGet(url)
-                .setFormParams(params)
+                .setQueryParams(params)
                 .setSingleHeaders(headers)
                 .execute().get(timeout, TimeUnit.SECONDS);
     }
