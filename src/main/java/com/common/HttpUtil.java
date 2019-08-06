@@ -1,10 +1,10 @@
 package com.common;
 
+import io.netty.handler.codec.http.HttpHeaders;
 import org.asynchttpclient.*;
 import org.asynchttpclient.request.body.multipart.Part;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.*;
 
 /**
@@ -27,7 +27,7 @@ public class HttpUtil {
      * @throws TimeoutException
      * @apiNote http get request
      */
-    public static String httpGet(String uri, Map<String, String> headers, long timeout) throws InterruptedException,
+    public static String httpGet(String uri, HttpHeaders headers, long timeout) throws InterruptedException,
             ExecutionException, TimeoutException {
         return httpGetV2(uri, headers, timeout).getResponseBody();
     }
@@ -44,12 +44,12 @@ public class HttpUtil {
      * @throws TimeoutException
      * @apiNote http get request return rsp
      */
-    public static Response httpGet(String url, List<Param> params, Map<String, String> headers, long timeout) throws
+    public static Response httpGet(String url, List<Param> params, HttpHeaders headers, long timeout) throws
             InterruptedException,
             ExecutionException, TimeoutException {
         return asyncHttpClient.prepareGet(url)
                 .setQueryParams(params)
-                .setSingleHeaders(headers)
+                .setHeaders(headers)
                 .execute().get(timeout, TimeUnit.SECONDS);
     }
 
@@ -59,9 +59,9 @@ public class HttpUtil {
      * @param headers
      * @param completionHandler back handler
      */
-    public static void httpGet(String uri, Map<String, String> headers, AsyncCompletionHandler completionHandler) {
+    public static void httpGet(String uri, HttpHeaders headers, AsyncCompletionHandler completionHandler) {
         asyncHttpClient.prepareGet(uri)
-                .setSingleHeaders(headers).execute(completionHandler);
+                .setHeaders(headers).execute(completionHandler);
     }
 
 
@@ -70,9 +70,9 @@ public class HttpUtil {
      * @param headers
      * @return future
      */
-    public static Future httpGet(String uri, Map<String, String> headers) {
+    public static Future httpGet(String uri, HttpHeaders headers) {
         return asyncHttpClient.prepareGet(uri)
-                .setSingleHeaders(headers)
+                .setHeaders(headers)
                 .execute();
     }
 
@@ -86,11 +86,26 @@ public class HttpUtil {
      * @throws TimeoutException
      * @apiNote http get request
      */
-    public static Response httpGetV2(String uri, Map<String, String> headers, long timeout) throws InterruptedException,
+    public static Response httpGetV2(String uri, HttpHeaders headers, long timeout) throws InterruptedException,
             ExecutionException, TimeoutException {
         return asyncHttpClient.prepareGet(uri)
-                .setSingleHeaders(headers)
+                .setHeaders(headers)
                 .execute().get(timeout, TimeUnit.SECONDS);
+    }
+
+
+    /**
+     *
+     * @param uri
+     * @param timeout
+     * @return
+     * @throws InterruptedException
+     * @throws ExecutionException
+     * @throws TimeoutException
+     */
+    public static String httpGetV3(String uri,long timeout) throws InterruptedException, ExecutionException, TimeoutException {
+        return asyncHttpClient.prepareGet(uri)
+                .execute().get(timeout, TimeUnit.SECONDS).getResponseBody();
     }
 
 
@@ -105,7 +120,7 @@ public class HttpUtil {
      * @throws TimeoutException
      * @apiNote http post request
      */
-    public static String httpPost(String url, String body, Map<String, String> headers, long timeout) throws InterruptedException,
+    public static String httpPost(String url, String body, HttpHeaders headers, long timeout) throws InterruptedException,
             ExecutionException, TimeoutException {
         return httpPostV2(url, body, headers, timeout).getResponseBody();
     }
@@ -120,11 +135,11 @@ public class HttpUtil {
      * @throws ExecutionException
      * @throws TimeoutException
      */
-    public static void httpPost(String url, String body, Map<String, String> headers,
+    public static void httpPost(String url, String body, HttpHeaders headers,
                                 AsyncCompletionHandler completionHandler) throws InterruptedException, ExecutionException, TimeoutException {
         asyncHttpClient.preparePost(url)
                 .setBody(body)
-                .setSingleHeaders(headers)
+                .setHeaders(headers)
                 .execute(completionHandler);
     }
 
@@ -138,11 +153,11 @@ public class HttpUtil {
      * @throws ExecutionException
      * @throws TimeoutException
      */
-    public static Future httpPost(String url, String body, Map<String, String> headers) throws InterruptedException,
+    public static Future httpPost(String url, String body, HttpHeaders headers) throws InterruptedException,
             ExecutionException, TimeoutException {
         return asyncHttpClient.preparePost(url)
                 .setBody(body)
-                .setSingleHeaders(headers)
+                .setHeaders(headers)
                 .execute();
     }
 
@@ -158,11 +173,11 @@ public class HttpUtil {
      * @throws TimeoutException
      * @apiNote http post request
      */
-    public static Response httpPostV2(String url, String body, Map<String, String> headers, long timeout) throws InterruptedException,
+    public static Response httpPostV2(String url, String body, HttpHeaders headers, long timeout) throws InterruptedException,
             ExecutionException, TimeoutException {
         return asyncHttpClient.preparePost(url)
                 .setBody(body)
-                .setSingleHeaders(headers)
+                .setHeaders(headers)
                 .execute().get(timeout, TimeUnit.SECONDS);
     }
 
@@ -177,11 +192,11 @@ public class HttpUtil {
      * @throws TimeoutException
      * @apiNote http post request
      */
-    public static Response httpPostV3(String url, List<Part> body, Map<String, String> headers, long timeout) throws InterruptedException,
+    public static Response httpPostV3(String url, List<Part> body, HttpHeaders headers, long timeout) throws InterruptedException,
             ExecutionException, TimeoutException {
         return asyncHttpClient.preparePost(url)
                 .setBodyParts(body)
-                .setSingleHeaders(headers)
+                .setHeaders(headers)
                 .execute().get(timeout, TimeUnit.SECONDS);
     }
 
